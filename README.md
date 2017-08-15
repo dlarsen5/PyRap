@@ -15,7 +15,7 @@ the Genius API to get artist info and song lyrics.
 Next in 'settings.py', list artists you wish to download song lyrics for in the 'artists_to_download' list variable. Then
 run 'Retrieve Lyrics.py' to download the lyrics for all of the artists you listed in 'settings.py'. This script will
 download the top 30 songs from each artist you mention (you can change the number of tracks in 'settings.py' as well defined
-by 'number_of_songs') and save them as pickle objects in 'Song Lyrics/' for later analysis. A number of artists' songs and song
+by 'number_of_songs') and save them as Python pickle objects in 'Song Lyrics/' for later analysis. A number of artists' songs and song
 lyrics are already included.
 
 Once you have your artist's songs and song lyrics downloaded, run 'Lyric Analysis.py' to analyze the word usage of the artists

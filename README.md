@@ -19,13 +19,12 @@ by 'number_of_songs') and save them as pickle objects in 'Song Lyrics/' for late
 lyrics are already included.
 
 Once you have your artist's songs and song lyrics downloaded, run 'Lyric Analysis.py' to analyze the word usage of the artists
-using the Python natural language processing library NLTK. This will compute and display the top 10 words used in all of
-an artist's songs that are longer than 3 characters (to get rid of excess 'the' and 'a' words).
+using the Python natural language processing library NLTK. This will compute the top 10 words longer than 3 characters (to get rid of excess 'the' and 'a' words) as well as the amount of small words used (less than 3 characters) as well as the total amount of lyrics used in all of an artist's songs. This will then save the statistics as a CSV file called statistics.csv for more detailed analysis.
 
 And that's it (for now). Later on I'll be looking at detailed lyric analysis, including classifying a song as a specific
 genre based on the text lyrics and sentiment analysis of individual artists.
 
-My overall goal for this project is to statistically analyze song lyrics while also improving my own writing abilities.
+My overall goal for this project is to statistically analyze song lyrics while also improving my own lyric writing abilities.
 
 Be on the look out for my robo-rapper.
 
@@ -33,3 +32,4 @@ Be on the look out for my robo-rapper.
 
 * [NLTK](http://www.nltk.org/) - Text Analysis
 * [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) - JSON/HTML scraping
+* [Pandas](http://pandas.pydata.org/) - Data matrix management

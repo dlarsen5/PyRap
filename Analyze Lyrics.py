@@ -1,12 +1,14 @@
-import pickle
-import os
-import nltk
-from nltk import word_tokenize
-from nltk.probability import FreqDist
-from nltk.corpus import stopwords
-import re
 import itertools
+import os
+import pickle
+import re
+
+import nltk
 from gensim import models
+from nltk import word_tokenize
+from nltk.corpus import stopwords
+from nltk.probability import FreqDist
+
 
 def common_words(lyrics):
 
@@ -353,3 +355,7 @@ def main():
     return model, sent
 
 model = models.Word2Vec.load('word2vecmodel')
+
+
+print('hi')
+print('idk')

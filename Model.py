@@ -18,7 +18,7 @@ artists = ['Kendrick Lamar','Drake','Chance The Rapper','J. Cole','Logic','Futur
                       'Bryson Tiller','21 Savage','Rae Sremmurd','French Montana','Miley Cyrus','XXXTENTACION','Lil Pump','Ski Mask the Slump God','Xavier Wulf',
                       'SmokePurpp','A Boogie Wit Da Hoodie','Playboi Carti','Ugly God','Wiz Khalifa','Justin Bieber','Beyoncé','Nicki Minaj','Meek Mill']
 
-def clean_name(song_title):
+def clean_title(song_title):
     new = re.sub(r'[^\x00-\x7F]+', ' ', song_title)
     if new[-1] == ')':
         ind = new.index('(')
@@ -26,7 +26,7 @@ def clean_name(song_title):
 
     return new
 
-def make_one_list_for_tx(song_lyrics):
+def clean_lyrics(song_lyrics):
 
     sentence_list = []
     bad_characters = ['_','(',')','$','—','\\']
@@ -78,7 +78,7 @@ def make_one_list_for_tx(song_lyrics):
 
     return song_corpus
 
-def Get_Lyrics_for_blob():
+def make_artists_corpus():
     song_lyrics_path = 'Song Lyrics/'
 
     artist_dict = {}
@@ -96,8 +96,8 @@ def Get_Lyrics_for_blob():
         with open(path,'rb') as f:
             lyrics = pickle.load(f)
         for title,song_lyrics in lyrics.items():
-            title = clean_name(title)
-            lyrics = make_one_list_for_tx(song_lyrics)
+            title = clean_title(title)
+            lyrics = clean_lyrics(song_lyrics)
             title_and_song[title] = lyrics
 
         art_lyrics_full[art] = title_and_song
@@ -106,26 +106,27 @@ def Get_Lyrics_for_blob():
 
     return art_lyrics_full
 
-def get_artist_frame(artist):
-
-    lyric_sent = Get_Lyrics_for_blob()
-    list_of_series = []
-
-    for artistt,songs in lyric_sent.items():
-        art_series = pd.Series(data=songs, name=artistt)
-        list_of_series.append(art_series)
-
-    frame = pd.concat(list_of_series,axis=1,keys=[s.name for s in list_of_series])
-
-    artist_series = frame[artist].dropna().reset_index()
-
-    artist_frame = pd.DataFrame(artist_series)
-    artist_frame['y_target'] = artist
-    artist_frame.columns = ['Song_Title','Lyrics','y_target']
-
-    return artist_frame
-
 def make_multiple_artist_frame(list_of_artists):
+
+    def get_artist_frame(artist):
+
+        lyric_sent = make_artists_corpus()
+        list_of_series = []
+
+        for artistt, songs in lyric_sent.items():
+            art_series = pd.Series(data=songs, name=artistt)
+            list_of_series.append(art_series)
+
+        frame = pd.concat(list_of_series, axis=1, keys=[s.name for s in list_of_series])
+
+        artist_series = frame[artist].dropna().reset_index()
+
+        artist_frame = pd.DataFrame(artist_series)
+        artist_frame['y_target'] = artist
+        artist_frame.columns = ['Song_Title', 'Lyrics', 'y_target']
+
+        return artist_frame
+
     list_of_frames = []
     for art in list_of_artists:
         list_of_frames.append(get_artist_frame(art))
@@ -134,11 +135,11 @@ def make_multiple_artist_frame(list_of_artists):
 
     return frame
 
-def train_and_test(how_many_to_test):
+def train_and_test(how_many_artists):
 
     artists_to_test = []
 
-    for i in range(how_many_to_test):
+    for i in range(how_many_artists):
         artists_to_test.append(random.choice(artists))
 
     frame = make_multiple_artist_frame(artists_to_test)
@@ -174,4 +175,4 @@ def train_and_test(how_many_to_test):
     print("Number of Correct Predictions: ", (len(y_test)-number_wrong))
     print("Accuracy: %s" % ((len(y_test)-number_wrong)/len(y_test)))
 
-train_and_test(len(artists))
+train_and_test(10)

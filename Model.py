@@ -18,15 +18,15 @@ artists = ['Kendrick Lamar','Drake','Chance The Rapper','J. Cole','Logic','Futur
                       'Bryson Tiller','21 Savage','Rae Sremmurd','French Montana','Miley Cyrus','XXXTENTACION','Lil Pump','Ski Mask the Slump God','Xavier Wulf',
                       'SmokePurpp','A Boogie Wit Da Hoodie','Playboi Carti','Ugly God','Wiz Khalifa','Justin Bieber','Beyoncé','Nicki Minaj','Meek Mill']
 
-def clean_title(song_title):
-    new = re.sub(r'[^\x00-\x7F]+', ' ', song_title)
-    if new[-1] == ')':
-        ind = new.index('(')
-        new = new[:ind]
+def Clean_Title(song_title):
+    new_title = re.sub(r'[^\x00-\x7F]+', ' ', song_title)
+    if new_title[-1] == ')':
+        ind = new_title.index('(')
+        new_title = new_title[:ind]
 
-    return new
+    return new_title
 
-def clean_lyrics(song_lyrics):
+def Clean_Lyrics(song_lyrics):
 
     sentence_list = []
     bad_characters = ['_','(',')','$','—','\\']
@@ -37,8 +37,6 @@ def clean_lyrics(song_lyrics):
                  'turn','back','lets','better','look','see','til',
                  'aint','tryna','oh','still','yo',"don't","i'm",'gotta',
                  'know','go','yuh']
-
-    total_stop_words = bad_words
 
     lines = song_lyrics.splitlines()
 
@@ -78,7 +76,7 @@ def clean_lyrics(song_lyrics):
 
     return song_corpus
 
-def make_artists_corpus():
+def Lyrics_Corpus():
     song_lyrics_path = 'Song Lyrics/'
 
     artist_dict = {}
@@ -90,31 +88,28 @@ def make_artists_corpus():
 
     art_lyrics_full = {}
 
-
     for art,path in artist_dict.items():
         title_and_song = {}
         with open(path,'rb') as f:
             lyrics = pickle.load(f)
         for title,song_lyrics in lyrics.items():
-            title = clean_title(title)
-            lyrics = clean_lyrics(song_lyrics)
+            title = Clean_Title(title)
+            lyrics = Clean_Lyrics(song_lyrics)
             title_and_song[title] = lyrics
 
         art_lyrics_full[art] = title_and_song
 
-
-
     return art_lyrics_full
 
-def make_multiple_artist_frame(list_of_artists):
+def Artist_DataFrame(list_of_artists):
 
     def get_artist_frame(artist):
 
-        lyric_sent = make_artists_corpus()
+        lyric_sent = Lyrics_Corpus()
         list_of_series = []
 
-        for artistt, songs in lyric_sent.items():
-            art_series = pd.Series(data=songs, name=artistt)
+        for art, songs in lyric_sent.items():
+            art_series = pd.Series(data=songs, name=art)
             list_of_series.append(art_series)
 
         frame = pd.concat(list_of_series, axis=1, keys=[s.name for s in list_of_series])
@@ -135,14 +130,21 @@ def make_multiple_artist_frame(list_of_artists):
 
     return frame
 
-def train_and_test(how_many_artists):
+def Train_And_Test(number_of_artists=None):
 
     artists_to_test = []
 
-    for i in range(how_many_artists):
-        artists_to_test.append(random.choice(artists))
+    if number_of_artists == None:
+        artists_to_test = artists
 
-    frame = make_multiple_artist_frame(artists_to_test)
+    elif number_of_artists > 0:
+        for i in range(number_of_artists):
+            artists_to_test.append(random.choice(artists))
+    else:
+        print('Error in amount of artists to test')
+        return
+
+    frame = Artist_DataFrame(artists_to_test)
 
     frame['length'] = frame['Lyrics'].str.count(' ')
 
@@ -164,15 +166,15 @@ def train_and_test(how_many_artists):
 
     model_pred = y_test_predicted
 
-    number_wrong = 0
+    wrong_predictions = 0
 
     for t,m_pred in zip(y_test,model_pred):
         if t != m_pred:
-            number_wrong += 1
+            wrong_predictions += 1
 
     print("Number of Training Lyrics: %s" % len(X_train))
     print("Number of Test Lyrics: ", len(y_test))
-    print("Number of Correct Predictions: ", (len(y_test)-number_wrong))
-    print("Accuracy: %s" % ((len(y_test)-number_wrong)/len(y_test)))
+    print("Number of Correct Predictions: ", (len(y_test)-wrong_predictions))
+    print("Accuracy: %s" % ((len(y_test)-wrong_predictions)/len(y_test)))
 
-train_and_test(10)
+    return

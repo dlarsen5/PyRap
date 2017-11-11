@@ -1,10 +1,16 @@
-import requests
-from bs4 import BeautifulSoup as BS
-import pickle
-import settings
 import logging
 import os
+import pickle
 import time
+
+import requests
+from bs4 import BeautifulSoup as BS
+
+import settings
+
+token = 'Bearer ' + settings.access_token
+base_url = "http://api.genius.com"
+headers = {'Authorization': token}
 
 def lyrics_from_song_api_path(song_api_path):
 
@@ -21,6 +27,7 @@ def lyrics_from_song_api_path(song_api_path):
     return lyrics
 
 def construct_lyrics(song_title,artist_name):
+
     search_url = base_url + "/search?q=" + song_title
     response = requests.get(search_url, headers=headers)
     json = response.json()
@@ -34,6 +41,7 @@ def construct_lyrics(song_title,artist_name):
       return lyrics_from_song_api_path(song_api_path)
 
 def get_artist_songs(artist):
+
     artist_id = ''
     search_url = base_url + "/search?q=" + artist
     response = requests.get(search_url, headers=headers)
@@ -59,11 +67,7 @@ def get_artist_songs(artist):
 
     return song_lyrics
 
-if __name__ == '__main__':
-
-    token = 'Bearer ' + settings.access_token
-    base_url = "http://api.genius.com"
-    headers = {'Authorization': token}
+def Get_Lyrics(artists_to_download):
 
     log_file = 'Logs/run.log'
 
@@ -75,7 +79,7 @@ if __name__ == '__main__':
 
     logging.info('Starting at %s' % time.time())
 
-    for artist in settings.artists_to_download:
+    for artist in artists_to_download:
 
         artist_path = 'Song Lyrics/' + artist.replace(' ', '_')
 
@@ -94,3 +98,5 @@ if __name__ == '__main__':
             logging.error('%s already downloaded' % artist)
 
     logging.info('Ended at %s' % time.time())
+
+    return

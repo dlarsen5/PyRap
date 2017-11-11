@@ -3,26 +3,27 @@ import os
 import pickle
 import re
 
+import gensim
 import nltk
 from gensim import models
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 from nltk.probability import FreqDist
 
+artists = ['Kendrick Lamar','Drake','Chance The Rapper','J. Cole','Logic','Future','Chief Keef','Eminem','Kanye West','JAY-Z','Big Sean',
+                      'Lil Uzi Vert','Tyler, The Creator','Earl Sweatshirt','2 Chainz','G-Eazy','ScHoolboy Q','Young Thug','Joey Bada$$', 'PnB Rock',
+                      'Flatbush Zombies','A$AP Rocky','A$AP Ferg','Dumbfoundead','Tory Lanez','Waka Flocka Flame','Nas','A Tribe Called Quest','Vic Mensa',
+                      '$UICIDEBOY$','Denzel Curry','Maxo Kream','Isaiah Rashad','Mike Stud','Mac Miller','Yonas','Childish Gambino','Rich Chigga',
+                      'Three 6 Mafia','Azizi Gibson','RiFF RAFF','Lil Dicky','Lil Wayne','Tyga','Gucci Mane','Rick Ross','Asher Roth','Travis Scott','Migos','Rihanna',
+                      'Bryson Tiller','21 Savage','Rae Sremmurd','French Montana','Miley Cyrus','XXXTENTACION','Lil Pump','Ski Mask the Slump God','Xavier Wulf',
+                      'SmokePurpp','A Boogie Wit Da Hoodie','Playboi Carti','Ugly God','Wiz Khalifa','Justin Bieber','Beyoncé','Nicki Minaj','Meek Mill']
 
-def common_words(lyrics):
+def tokenize(lines):
 
-    lines = [x for x in lyrics.splitlines() if '[' not in x and x != '']
 
-    w = ' '.join(lines)
+    dirty_tokens = word_tokenize(lines)
 
-    dirty_tokens = word_tokenize(w)
 
-    stopword = set(stopwords.words('english'))
-
-    mystopwords = ['like','yeah','know','they']
-
-    total_stop_words = mystopwords + list(stopword)
 
     tokens = [word for word in dirty_tokens if word not in total_stop_words]
 
@@ -33,18 +34,7 @@ def common_words(lyrics):
     text = nltk.Text(words)
     fdist = FreqDist(text)
 
-    cus_words = ['fuck','shit','damn','hell','bitch','ass','asshole']
-
-    cussin = len([word.lower() for word in tokens if word.lower() in cus_words])
-    nigga = len([word.lower() for word in tokens if 'nigga' in word.lower()])
-
-    most_common = fdist.most_common(10)
-
-    values = {'Small Words' : small_words,'Total Words' : total_lyrics,
-              '10 Most Common' : most_common, 'Cuse Words' : cussin,
-              'Niggas' : nigga}
-
-    return values
+    return
 
 def get_verses(all_lyrics,artist):
     #finds total verses, hooks, bridges, choruses written by a specific artist
@@ -216,18 +206,14 @@ def clean_song_titles(song_dict):
 
     return new_keys,featured_artists
 
-artists = ['Kendrick Lamar','Drake','Chance The Rapper','J. Cole','Logic','Future','Chief Keef','Eminem','Kanye West','JAY-Z','Big Sean',
-                      'Lil Uzi Vert','Tyler, The Creator','Earl Sweatshirt','2 Chainz','G-Eazy','ScHoolboy Q','Young Thug','Joey Bada$$', 'PnB Rock',
-                      'Flatbush Zombies','A$AP Rocky','A$AP Ferg','Dumbfoundead','Tory Lanez','Waka Flocka Flame','Nas','A Tribe Called Quest','Vic Mensa',
-                      '$UICIDEBOY$','Denzel Curry','Maxo Kream','Isaiah Rashad','Mike Stud','Mac Miller','Yonas','Childish Gambino','Rich Chigga',
-                      'Three 6 Mafia','Azizi Gibson','RiFF RAFF','Lil Dicky','Lil Wayne','Tyga','Gucci Mane','Rick Ross','Asher Roth','Travis Scott','Migos','Rihanna',
-                      'Bryson Tiller','21 Savage','Rae Sremmurd','French Montana','Miley Cyrus','XXXTENTACION','Lil Pump','Ski Mask the Slump God','Xavier Wulf',
-                      'SmokePurpp','A Boogie Wit Da Hoodie','Playboi Carti','Ugly God','Wiz Khalifa','Justin Bieber','Beyoncé','Nicki Minaj','Meek Mill']
-
 def make_lists(Lines,lyric_type):
 
     sentence_list = []
-    bad_characters = ['"',"'",'_','(',')','$',',','.','?','!','—']
+    bad_characters = ['"','_','(',')','$',',','.','?','!','—','']
+    bad_words = ['it','the','you','they','she','he','this','my','to','me','in','like','yeah',"you're","that's","really","couldn't"]
+    stopword = set(stopwords.words('english'))
+
+    total_stop_words = bad_words + list(stopword)
 
     for lst in Lines[lyric_type]:
         for ele in lst:
@@ -240,7 +226,9 @@ def make_lists(Lines,lyric_type):
                     if character not in bad_characters:
                         new_word.append(character)
 
-                words.append(''.join(new_word))
+                w = ''.join(new_word)
+                if w not in total_stop_words and len(w) > 5:
+                    words.append(w)
                 new_word = []
 
             sentence_list.append(words)
@@ -251,6 +239,16 @@ def make_one_list(song_lyrics):
 
     sentence_list = []
     bad_characters = ['"',"'",'_','(',')','$',',','.','?','!','—']
+    bad_words = ['it', 'the', 'you', 'they', 'she', 'he', 'this', 'my', 'to', 'me', 'in', 'like', 'yeah', "you're",
+                 "that's", "really", "couldn't",
+                 'youre','get','want','come','uh','put','got','one','im',
+                 'ran','em','right','gon','need','take','dont','every',
+                 'turn','back','lets','better','look','see','til',
+                 'aint','tryna','oh','still','yo',"don't","i'm",'gotta',
+                 'know','go','yuh']
+    stopword = set(stopwords.words('english'))
+
+    total_stop_words = bad_words + list(stopword)
 
     lines = song_lyrics.splitlines()
 
@@ -268,10 +266,53 @@ def make_one_list(song_lyrics):
                 if character not in bad_characters:
                     new_word.append(character)
 
-            words.append(''.join(new_word))
+            w = ''.join(new_word)
+            if w not in total_stop_words:
+                words.append(w)
             new_word = []
+
         if words != []:
             sentence_list.append(words)
+
+    return sentence_list
+
+def make_one_list_for_tx(song_lyrics):
+
+    sentence_list = []
+    bad_characters = ['_','(',')','$','—','\\']
+    bad_words = ['it', 'the', 'you', 'they', 'she', 'he', 'this', 'my', 'to', 'me', 'in', 'like', 'yeah', "you're",
+                 "that's", "really", "couldn't",
+                 'youre','get','want','come','uh','put','got','one','im',
+                 'ran','em','right','gon','need','take','dont','every',
+                 'turn','back','lets','better','look','see','til',
+                 'aint','tryna','oh','still','yo',"don't","i'm",'gotta',
+                 'know','go','yuh']
+    stopword = set(stopwords.words('english'))
+
+    total_stop_words = bad_words + list(stopword)
+
+    lines = song_lyrics.splitlines()
+
+    for line in lines:
+        if line == '\n':
+            continue
+        if '[' in line:
+            continue
+        new_word = []
+        separate = line.split()
+        words = []
+        for word in separate:
+            for character in word:
+                character = character.lower()
+                if character not in bad_characters:
+                    new_word.append(character)
+
+            w = ''.join(new_word)
+            words.append(w)
+            new_word = []
+
+        if words != []:
+            sentence_list.append(' '.join(words))
 
     return sentence_list
 
@@ -319,6 +360,30 @@ def Get_Lyrics():
 
     return all_lyrics
 
+def Get_Lyrics_for_blob():
+    song_lyrics_path = 'Song Lyrics/'
+
+    artist_dict = {}
+
+
+    for root,dirs,files in os.walk(song_lyrics_path):
+        for f in files:
+            name = root + f
+            artist_dict[f.replace('_',' ')] = name
+
+    all_lyrics = []
+
+    for art,path in artist_dict.items():
+        with open(path,'rb') as f:
+            lyrics = pickle.load(f)
+        for title,song_lyrics in lyrics.items():
+            lyrics = make_one_list_for_tx(song_lyrics)
+            all_lyrics+=lyrics
+
+
+
+    return all_lyrics
+
 def Get_All_Lyrics(all_lyrics):
 
     sentence_list = []
@@ -342,20 +407,41 @@ def Get_All_Lyrics(all_lyrics):
 
     return sentence_list
 
-#one artist's values
-Lines, Songs, All_lyrics = Get_Artist_Lyrics('Drake')
+def get_drake():
 
-def main():
-    full_sent = Get_Lyrics()
-
-    sent = make_lists(Lines,'Verses')
-
-    model = models.Word2Vec(full_sent,min_count=1)
-
-    return model, sent
-
-model = models.Word2Vec.load('word2vecmodel')
+    Lines, Songs, All_lyrics = Get_Artist_Lyrics('Drake')
 
 
-print('hi')
-print('idk')
+    drake_sent = make_lists(Lines,'Verses')
+
+    dictionary = gensim.corpora.Dictionary(drake_sent)
+
+    corpus = [dictionary.doc2bow(sent) for sent in drake_sent]
+
+    lda = models.LdaModel(corpus,id2word=dictionary,num_topics=10)
+
+    for x in lda.print_topics():
+        print(str(x[0]) + ' ' + str(x[1]).split('+')[0])
+        print('\n')
+
+lyric_sent = Get_Lyrics_for_blob()
+
+long_ass_string = lyric_sent[0]
+
+for ele in lyric_sent:
+    new = ' ' + ele
+    long_ass_string += new
+
+#dictionary = gensim.corpora.Dictionary('. '.join(lyric_sent))
+
+#corpus = [dictionary.doc2bow(sent) for sent in lyric_sent]
+
+#lda = models.LdaModel(corpus, id2word=dictionary, num_topics=10)
+
+
+
+"""
+for x in lda.print_topics():
+    print(x)
+    print('\n')
+"""

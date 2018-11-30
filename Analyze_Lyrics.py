@@ -23,8 +23,6 @@ def tokenize(lines):
 
     dirty_tokens = word_tokenize(lines)
 
-
-
     tokens = [word for word in dirty_tokens if word not in total_stop_words]
 
 
@@ -117,6 +115,12 @@ def get_verses(all_lyrics,artist):
 
             artist_first_name = artist.split()[0].lower()
 
+            total_lines = []
+            one_song_verse_lines = []
+            one_song_chorus_lines = []
+            one_song_hook_lines = []
+            one_song_bridge_lines = []
+
             if 'Ft' in clean_title:
                 lines = song_lyrics.splitlines()
                 for l in range(len(lines)):
@@ -165,23 +169,20 @@ def get_verses(all_lyrics,artist):
 
             if len(one_song_verse_lines) > 0:
                 total_lines.append(total_verse_lines)
-                one_song_verse_lines = []
+
             if len(one_song_chorus_lines) > 0:
                 total_lines.append(total_chorus_lines)
-                one_song_chorus_lines = []
+
             if len(one_song_hook_lines) > 0:
                 total_lines.append(total_hook_lines)
-                one_song_hook_lines = []
+
             if len(one_song_bridge_lines) > 0:
                 total_lines.append(total_bridge_lines)
-                one_song_bridge_lines = []
+
 
             if len(total_lines) > 0:
                 Songs[song_title] = list(itertools.chain.from_iterable(total_lines))
-
-            total_lines = []
-
-
+    #FIXME: Songs has all duplicates
     Lines = {'Verses':total_verse_lines,'Choruses':total_chorus_lines,'Hooks':total_hook_lines,'Bridges':total_bridge_lines}
 
     return Lines, Songs
@@ -332,7 +333,7 @@ def Get_Artist_Lyrics(artist):
         with open(path,'rb') as f:
             all_lyrics[art] = pickle.load(f)
 
-    Lines,Songs = get_verses(all_lyrics,artist)
+    Lines, Songs = get_verses(all_lyrics,artist)
 
     return Lines, Songs, all_lyrics
 
@@ -411,7 +412,6 @@ def get_drake():
 
     Lines, Songs, All_lyrics = Get_Artist_Lyrics('Drake')
 
-
     drake_sent = make_lists(Lines,'Verses')
 
     dictionary = gensim.corpora.Dictionary(drake_sent)
@@ -424,13 +424,32 @@ def get_drake():
         print(str(x[0]) + ' ' + str(x[1]).split('+')[0])
         print('\n')
 
-lyric_sent = Get_Lyrics_for_blob()
+def get_song_structures(artist):
+    Lines, Songs, All_lyrics = Get_Artist_Lyrics(artist)
 
-long_ass_string = lyric_sent[0]
+    song_structures = {}
 
-for ele in lyric_sent:
-    new = ' ' + ele
-    long_ass_string += new
+    for section, lines in Lines.items():
+        rhyming_sections = []
+        for lines_ in lines:
+            rhyming_words = [line.split()[-2:] for line in lines_ ]
+            rhyming_sections.append(rhyming_words)
+        song_structures[section] = rhyming_sections
+
+    return song_structures
+
+song_structures = get_song_structures('Kendrick Lamar')
+
+print()
+
+
+# lyric_sent = Get_Lyrics_for_blob()
+#
+# long_ass_string = lyric_sent[0]
+#
+# for ele in lyric_sent:
+#     new = ' ' + ele
+#     long_ass_string += new
 
 #dictionary = gensim.corpora.Dictionary('. '.join(lyric_sent))
 

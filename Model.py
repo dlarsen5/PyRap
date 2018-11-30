@@ -149,6 +149,7 @@ def Train_And_Test(number_of_artists=None):
     frame['length'] = frame['Lyrics'].str.count(' ')
 
     text = list(frame['Lyrics'].values)
+    print(frame['Lyrics'].values[0])
 
     tf_vectorizer = CountVectorizer(max_df=0.95, min_df=2, stop_words='english')
 
@@ -178,3 +179,5 @@ def Train_And_Test(number_of_artists=None):
     print("Accuracy: %s" % ((len(y_test)-wrong_predictions)/len(y_test)))
 
     return
+
+Train_And_Test(5)

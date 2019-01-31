@@ -1,0 +1,2 @@
+#Genius API token
+access_token = '6p7RcibF8HBA1TjIBeNjm80B7-SoQ5P8xBjhhCzKAjlqteOd5jEFKqwkB0HtvOXcLCUQzHq5YhDdJmzR0xGQFw'

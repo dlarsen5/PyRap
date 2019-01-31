@@ -1,1 +1,4 @@
-move all word types into here
+* Types of Words
+** Objects (Noun)
+** Modifiers (Adjectives/Adverbs)
+** Functions (Verbs)

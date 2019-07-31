@@ -1,0 +1,108 @@
+* Adjectives
+** words that modify (change) nouns(objects), pronouns and other
+   adjectives
+** modifies different attributes of the object
+** types
+*** Descriptive
+**** use different "degrees" of adjectives based on how many
+    things are being compared
+**** types:
+***** positive
+****** normal adjective that's used to describe, not compare
+***** comparative
+****** used to compare two things (and is often followed by
+      the word "than")
+***** superlative
+****** used t compare three or more things or to state that
+      something is the most
+**** if a descriptive adjective has one or two syllables, can
+    be transformed into its comparative and superlative form
+    by adding -er and -est endings
+**** if a descriptive adjective has three or more syllables, use
+    more and most before it to transform it into the comparative
+    and superlative
+*** Quantitative
+**** answers the questions "how much?" or "how many?"
+**** describe the quantity of something
+**** usually numeric
+*** Demonstrative
+**** describes "which" noun or pronoun you're referring
+     to
+**** include the words:
+***** this
+***** that
+***** these
+***** those
+**** demonstrative adjectives always come before the word
+     they're modifying
+*** Possessive
+**** posessive adjectives show possession, they describe
+     to whom a thing belongs
+**** common adjectives:
+***** My
+***** His
+***** Her
+***** Their
+***** Your
+***** Our
+**** all these adjectives except the word "his" can only
+     be used before a noun
+**** if you want to leave off the noun or pronoun being
+     modified, use these possessive adjectives instead:
+***** Mine
+***** His
+***** Hers
+***** Theirs
+***** Yours
+***** Ours
+*** Interrogative
+**** interrogative adjectives interrogate, meaning that
+     they ask a question
+**** these are always followed by a noun or a pronoun and
+     are used to form questions
+**** examples:
+***** Which
+****** asks to make a choice between options
+***** What
+****** asks to make a choice (in general)
+***** Whose
+****** asks who something belongs to
+**** other question words, like "who" or "how" aren't adjectives
+     since they don't modify nouns
+**** which, what, and whose are only considered adjectives if they
+     are followed immediately by a noun
+***** "Which color is your favorite?" (ADJ) vs "Which is your fav color?"
+*** Distributive
+**** describe specific members out of a group
+**** these adjectives are used to single out one or more individual
+     items or people
+**** commonly used:
+***** Each
+****** every single one of a group (used to speak about group members
+       individually)
+***** Every
+****** every single one of a group (used to make generalizations)
+***** Either
+****** one between a choice of two
+***** Neither
+****** not one or the other between a choice of two
+***** Any
+****** one or some things out of any number of choices, this is
+       also used when the choice is irrelevant like "I'll take
+       any of them"
+*** Articles
+**** only three articles in English, many languages don't have them
+***** A
+****** a singular, general item
+***** An
+****** a singular, general item, use this before words that start with
+       a vowel
+***** The
+****** a singular or plural, specific item
+**** use "a" and "an" to talk about something general, use "the"
+     when talking about something specific
+**** try to use a demonstrative adjective before the noun, it it makes
+     sense use the word "the", if it changes the meaning of the phrase
+     use "a" or "an"
+***** "I don't understand *this* question"
+***** "I don't understand *the* question"

@@ -1,0 +1,16 @@
+# https://www.uvu.edu/writingcenter/docs/handouts/grammar/typesofverbs.pdf
+* Verbs
+** words that express action or state of being
+** three types:
+*** action
+**** words that express action (give, eat, walk, etc.) or
+     possession (have, own, etc.)
+**** action verbs can either be:
+***** transitive
+****** always has a noun that receives the action of the verb,
+       called the *direct object*
+******* "Laurissa *raises* her hand"
+******* verb: "raises", direct object: "her hand", transitive verb: "raises"
+***** intransitive
+*** linking
+*** helping

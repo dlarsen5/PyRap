@@ -6,6 +6,10 @@ My overall goal for this project is to statistically analyze song lyrics while a
 
 Be on the look out for my robo-rapper.
 
+# Getting Started
+
+Just add a `settings.py` file to `genius/` with your Genius API token set as `access_token = KEY` and run the scripts in `generate/` to generate some lines.
+
 ## Built With
 
 * [NLTK](http://www.nltk.org/) - Text Analysis

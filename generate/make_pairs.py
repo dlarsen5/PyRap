@@ -40,8 +40,6 @@ if __name__ == '__main__':
         if inp == 'j':
             save_lines.append(p)
             os.system('clear')
-            print('cool my dude')
-            time.sleep(0.05)
         elif inp == 'q':
             break
         else:
@@ -55,5 +53,3 @@ if __name__ == '__main__':
 
     os.system('clear')
     print('\n', "saved file %s" % save_file.split('/')[-1], '\n')
-    # Don't exit too quick or she'll think you don't like her
-    time.sleep(0.1)

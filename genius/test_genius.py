@@ -16,7 +16,6 @@ class TestGenius(unittest.TestCase):
         url = 'https://genius.com/Smooky-margielaa-not-right-lyrics'
         lyrics = get_url(url)
         l = sort_lyrics(lyrics)
-        st()
 
         if lyrics:
             return

@@ -15,7 +15,6 @@ class Generate:
 
     def __init__(self):
         self.pos_dict = {}
-        self.my_dict = {}
         self.topic_dict = {}
         self.topic_words = []
         self.line_topics = {}
@@ -38,7 +37,7 @@ class Generate:
         if not self.pos_dict:
             self.load_pos_words()
 
-        if not self.my_dict:
+        if not self.topic_dict:
             self.load_topics()
 
         if topic:

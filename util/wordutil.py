@@ -10,9 +10,6 @@ from PyDictionary import PyDictionary
 import pronouncing
 import requests as req
 
-if '../' not in sys.path:
-    sys.path.append("../")
-
 from genius.lyrics import ConvertLyrics as lyrics
 
 
@@ -28,8 +25,6 @@ class WordUtil:
             - Antonyms: antonym(word) -> return antonym
             - Lyrics: get_lyrics(artist) -> self.artist_lyrics
         '''
-        self.my_dict = {}
-        self.my_pos = list(self.my_dict.keys())
         self.pos_dict = {}
         self.lyrics = lyrics()
         self.get_artist = self.lyrics.convert_artist
@@ -179,7 +174,7 @@ class WordUtil:
         words = self.rap_dict[pos]
         words = [x for x in words if x.lower().startswith(startswith)]
 
-        return pp(words)
+        return words
 
     def load_rap_pos(self):
 

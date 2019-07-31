@@ -40,7 +40,7 @@ if __name__ == '__main__':
         rand_l = random.choice(lines)
 
         out_l = l + ' ' + random.choice(compares) + ' ' + rand_l
-        
+
         print(out_l, '\n', 'y/n?', '\n')
 
         inp = input()
